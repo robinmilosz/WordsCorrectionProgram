@@ -1,3 +1,10 @@
+#personal
+my_paths.txt
+my_text.txt
+my_text2.txt
+my_text3.txt
+liste_mots_fr2.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

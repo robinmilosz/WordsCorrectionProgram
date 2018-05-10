@@ -1,0 +1,7 @@
+
+https://github.com/mmai/chiensuperieur/blob/master/dictionnaires/liste.de.mots.francais.frgut.txt
+
+https://github.com/ManiacDC/TypingAid
+https://github.com/ManiacDC/TypingAid/blob/master/Wordlists/WordList_French%20rommmcek.txt
+
+https://github.com/dwyl/english-words
