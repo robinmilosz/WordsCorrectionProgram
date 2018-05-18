@@ -133,10 +133,18 @@ if (len(sys.argv) > 1):
 else:
     filePath = "my_text.txt"
 
+#for plurality checking
+lastKeyFrPlural = False
+#from http://test.alloprof.qc.ca/francais/le-systeme-des-accords/le-pluriel-des-determinants.aspx
+pluralFrDeterminers = ["les","des","mes","tes","ses","nos","vos","leurs","ces","quels","quelles","deux","trois","quatres","cinq"]
+pluralFrExceptions = ["top","arn","deux","trois","quatres","cinq"]
+
 
 #open the target file
 lineNumber = 0
 numberOfPotentialMistakes = 0
+numberOfLinesInFile = 0
+numberOfCheckedKeysInFile = 0
 with open(filePath,"r") as dataFile:
     for line in dataFile: #read all the lines
         lineNumber += 1
@@ -151,10 +159,18 @@ with open(filePath,"r") as dataFile:
                 if pureWord[len(pureWord)-1] == '.':#so that website stay but no ending words
                     pureWord = pureWord[0:len(pureWord)-1]
 
+
+
             #key = pureWord.decode('utf-8').lower()
             key = pureWord.lower() #put it in lowercase
             if len(key) > 0:
+                if key in pluralFrDeterminers:#checking if its a plural determiner
+                    lastKeyFrPlural = True
+                else:
+                    lastKeyFrPlural = False
+
                 if okKey(key):
+                    numberOfCheckedKeysInFile += 1
                     if key in frenchDictionary: #if it's in the french dictionary
                         #print "ok"
                         pass
@@ -166,16 +182,31 @@ with open(filePath,"r") as dataFile:
                         pass
                     else: #else it my be an error
                         numberOfPotentialMistakes += 1
-                        print "%s (%s)" % (key,lineNumber) #print the potential mistake
+                        print "%s (%s), orthography?" % (key,lineNumber) #print the potential mistake
                         #print "%s" % (key)
                         #print "%s" % (pureWord)
+
+                    if (lastKeyFrPlural):#if the last key was
+                        if (key[len(key)-1] == 's' or key[len(key)-1] == 'x'):
+                            pass
+                        elif key in pluralFrExceptions:
+                            pass
+                        else:
+                            numberOfPotentialMistakes += 1
+                            print "%s (%s), plural?" % (key,lineNumber) #print the potential mistake
+
+
 #close the file
 dataFile.close()
+numberOfLinesInFile = lineNumber
 
 #print the number of potential mistakes found
 print ""
 print "numberOfPotentialMistakes: %s" %numberOfPotentialMistakes
+print "numberOfLinesInFile: %s" %numberOfLinesInFile
+print "numberOfCheckedKeysInFile: %s" %numberOfCheckedKeysInFile
 print ""
+
 
 #print the execution time
 st = time.time()-ts

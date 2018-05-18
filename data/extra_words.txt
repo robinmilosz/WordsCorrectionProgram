@@ -67,6 +67,8 @@ performant
 bruitée
 inapplicabilité
 influenceurs
+ciblés
+antisymétrie
 
 stylesheet
 doctype
@@ -166,6 +168,7 @@ bubblesort
 skr
 fpt
 tractability
+isu
 
 rétinoblastome
 neuroblastome
@@ -175,11 +178,14 @@ nonpolyposis
 microarray
 genomics
 microarn
+microarns
 microarrays
 bodymap
 oncologues
 transcriptomique
 
+crossref
+pubmed
 midiro
 cepsum
 crm
@@ -256,6 +262,9 @@ pacif
 25th
 37th
 
+sma75
+
+gibbard
 stéphane
 lécureuil
 etzioni
