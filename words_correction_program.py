@@ -139,10 +139,17 @@ lastKeyFrPlural = False
 pluralFrDeterminers = ["les","des","mes","tes","ses","nos","vos","leurs","ces","quels","quelles","deux","trois","quatres","cinq"]
 pluralFrExceptions = ["top","arn","deux","trois","quatres","cinq"]
 
+#for language variation checking
+lastKeyLanguageIs = "Empty" # "French", "English", "Extra", "Error", "Empty"
+languageVariationChecking = False #warning it's a first very inneficient version due to some names inserted in the dictionnaries and same spelled words
+
+#other
+lastKey = ""
 
 #open the target file
 lineNumber = 0
 numberOfPotentialMistakes = 0
+numberOfPotentialLanguageSwitch = 0
 numberOfLinesInFile = 0
 numberOfCheckedKeysInFile = 0
 with open(filePath,"r") as dataFile:
@@ -173,16 +180,26 @@ with open(filePath,"r") as dataFile:
                     numberOfCheckedKeysInFile += 1
                     if key in frenchDictionary: #if it's in the french dictionary
                         #print "ok"
+                        if (lastKeyLanguageIs == "English" and languageVariationChecking):
+                            print "%s %s (%s), en-fr language switch?" % (lastKey,key,lineNumber) #print the potential mistake
+                            numberOfPotentialLanguageSwitch += 1
+                        lastKeyLanguageIs = "French"
                         pass
                     elif key in englishDictionary: #if it's in the english dictionary
                         #print "ok"
+                        if (lastKeyLanguageIs == "French" and languageVariationChecking):
+                            print "%s %s (%s), fr-en language switch?" % (lastKey,key,lineNumber) #print the potential mistake
+                            numberOfPotentialLanguageSwitch += 1
+                        lastKeyLanguageIs = "English"
                         pass
                     elif key in extraDictionary: #if it's in the extra words dictionary
                         #print "ok"
+                        lastKeyLanguageIs = "Extra"
                         pass
                     else: #else it my be an error
                         numberOfPotentialMistakes += 1
                         print "%s (%s), orthography?" % (key,lineNumber) #print the potential mistake
+                        lastKeyLanguageIs = "Error"
                         #print "%s" % (key)
                         #print "%s" % (pureWord)
 
@@ -195,6 +212,10 @@ with open(filePath,"r") as dataFile:
                             numberOfPotentialMistakes += 1
                             print "%s (%s), plural?" % (key,lineNumber) #print the potential mistake
 
+                    lastKey = key
+                else:
+                    lastKeyLanguageIs = "Empty"
+
 
 #close the file
 dataFile.close()
@@ -203,6 +224,7 @@ numberOfLinesInFile = lineNumber
 #print the number of potential mistakes found
 print ""
 print "numberOfPotentialMistakes: %s" %numberOfPotentialMistakes
+print "numberOfPotentialLanguageSwitch: %s" %numberOfPotentialLanguageSwitch
 print "numberOfLinesInFile: %s" %numberOfLinesInFile
 print "numberOfCheckedKeysInFile: %s" %numberOfCheckedKeysInFile
 print ""
