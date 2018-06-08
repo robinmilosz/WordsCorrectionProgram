@@ -141,7 +141,7 @@ pluralFrExceptions = ["top","arn","deux","trois","quatres","cinq"]
 
 #for language variation checking
 lastKeyLanguageIs = "Empty" # "French", "English", "Extra", "Error", "Empty"
-languageVariationChecking = False #warning it's a first very inneficient version due to some names inserted in the dictionnaries and same spelled words
+languageVariationChecking = True #warning it's a first very inneficient version due to some names inserted in the dictionnaries and same spelled words
 
 #other
 lastKey = ""
@@ -181,15 +181,17 @@ with open(filePath,"r") as dataFile:
                     if key in frenchDictionary: #if it's in the french dictionary
                         #print "ok"
                         if (lastKeyLanguageIs == "English" and languageVariationChecking):
-                            print "%s %s (%s), en-fr language switch?" % (lastKey,key,lineNumber) #print the potential mistake
-                            numberOfPotentialLanguageSwitch += 1
+                            if (not(key in extraDictionary or lastKey in extraDictionary)):
+                                print "%s %s (%s), en-fr language switch?" % (lastKey,key,lineNumber) #print the potential mistake
+                                numberOfPotentialLanguageSwitch += 1
                         lastKeyLanguageIs = "French"
                         pass
                     elif key in englishDictionary: #if it's in the english dictionary
                         #print "ok"
                         if (lastKeyLanguageIs == "French" and languageVariationChecking):
-                            print "%s %s (%s), fr-en language switch?" % (lastKey,key,lineNumber) #print the potential mistake
-                            numberOfPotentialLanguageSwitch += 1
+                            if (not(key in extraDictionary or lastKey in extraDictionary)):
+                                print "%s %s (%s), fr-en language switch?" % (lastKey,key,lineNumber) #print the potential mistake
+                                numberOfPotentialLanguageSwitch += 1
                         lastKeyLanguageIs = "English"
                         pass
                     elif key in extraDictionary: #if it's in the extra words dictionary

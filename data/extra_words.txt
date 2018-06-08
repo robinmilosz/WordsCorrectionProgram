@@ -111,6 +111,11 @@ bruitée
 bruités
 bruité
 bruiter
+triplets
+triplet
+reviewer
+reviewers
+manipulable
 
 
 HTMLWords
@@ -145,6 +150,7 @@ bottomleft
 twothird
 wikipedia
 1400px
+web
 
 
 UniversityRelatedWords
@@ -166,6 +172,8 @@ prédoc
 
 KemenyConsensusWords
 
+kendall
+kemeny
 fur
 vns
 bestofa
@@ -177,6 +185,7 @@ sigfur
 subiterative
 bestfit
 raynaud
+borda
 bordacount
 medrank
 fagindyn
@@ -197,6 +206,10 @@ logquicksort
 detquicksort
 quicksort
 kwiksort
+ms
+ks
+is
+copeland
 copelandwins
 kernelization
 votefair
@@ -238,6 +251,101 @@ lpkwiksort
 subexponetial
 fas
 fes
+minimum
+feedback
+arc
+branch
+bound
+pick
+perm
+kernel
+np
+hard
+difficile
+dirty
+pair
+ibm
+ilp
+ip
+lp
+lop
+data
+id
+css
+ga
+fast
+quick
+greedy
+algorithm
+beam
+search
+ptas
+variable
+neighborhood
+locally
+rule
+ea
+meta
+fitness
+pareto
+random
+simulated
+annealing
+opt
+problem
+ecc
+always
+theorem
+and
+an
+or
+not
+for
+consensus
+decor
+ls
+sls
+pos
+heuristic
+ranking
+algorithms
+algorithm
+weighted
+edge
+set
+plurality
+linear
+vertex
+synthetic
+matching
+average
+score
+optimal
+social
+values
+mathematics
+paradoxes
+paradoxe
+ski
+major
+association
+sports
+tournament
+multi
+document
+programming
+bio
+list
+lists
+supervised
+baseball
+thumbs
+up
+yahoo
+hydra
+twitter
+spam
+aggregation
 
 
 BioInfoWords
@@ -256,7 +364,8 @@ bodymap
 oncologues
 transcriptomique
 toppgene
-
+endeavour
+arn
 
 PlacesJournalsConferences
 
@@ -347,6 +456,16 @@ pacif
 8e
 9e
 10e
+xi
+xii
+xiii
+xiv
+xv
+xvi
+xvii
+xviii
+xix
+xx
 
 ScienceBibTexRef
 
@@ -356,8 +475,33 @@ cw09
 am12
 daai15
 
+
 ScienceAuthorsNames 
 
+satterthwaite
+shannon
+peyton
+kenneth
+arrow
+blin
+aledo
+charon
+sylvie
+allende
+ambrosio
+coleman
+spearman
+markov
+van
+von
+hamel
+mallows
+young
+john
+maurice
+condorcet
+davenport
+ali
 plackett
 bouza
 fernau
@@ -440,6 +584,9 @@ betzler
 simjour
 karpinski
 schudy
+fisher
+yates
+simpson
 
 
 OtherRandomWords
