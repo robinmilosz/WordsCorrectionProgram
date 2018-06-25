@@ -116,6 +116,8 @@ triplet
 reviewer
 reviewers
 manipulable
+finaux
+subexponentiel
 
 
 HTMLWords
@@ -151,6 +153,7 @@ twothird
 wikipedia
 1400px
 web
+Évidemment
 
 
 UniversityRelatedWords
@@ -169,6 +172,7 @@ frqnt
 crsng
 brcp
 prédoc
+
 
 KemenyConsensusWords
 
@@ -250,6 +254,7 @@ r3
 lpkwiksort
 subexponetial
 fas
+wfas
 fes
 minimum
 feedback
@@ -319,20 +324,10 @@ vertex
 synthetic
 matching
 average
-score
-optimal
-social
 values
 mathematics
-paradoxes
-paradoxe
-ski
-major
-association
-sports
 tournament
 multi
-document
 programming
 bio
 list
@@ -346,7 +341,7 @@ hydra
 twitter
 spam
 aggregation
-
+matlab
 
 BioInfoWords
 
@@ -369,6 +364,7 @@ arn
 
 PlacesJournalsConferences
 
+illinois
 crossref
 pubmed
 midiro
@@ -456,6 +452,17 @@ pacif
 8e
 9e
 10e
+11e
+12e
+13e
+14e
+15e
+16e
+17e
+18e
+19e
+20e
+21e
 xi
 xii
 xiii
@@ -474,6 +481,16 @@ sv98
 cw09
 am12
 daai15
+phhclvm17
+rpdoabr16
+pgk09
+mt98
+acn08
+betzler2010partial
+sz09
+mh18
+rh17
+bbn14
 
 
 ScienceAuthorsNames 
@@ -593,3 +610,7 @@ OtherRandomWords
 
 acroyoga
 californien
+telecommuting
+lycos
+zener
+lipari

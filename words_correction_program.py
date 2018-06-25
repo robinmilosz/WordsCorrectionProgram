@@ -4,6 +4,14 @@
 A small personal project to correct orthography in LaTeX and html files
 Author: Robin Milosz
 
+it checks:
+french and english orthography spelling
+french plural with determiners
+
+optionnal:
+french/english language switch checking
+french "a" and "'a" (accent) listing
+
 to run:
 python words_correction_program.py [the path of your target file "/u/username/Documents/example.tex"]
 '''
@@ -77,6 +85,7 @@ print " "
 #create empty dictionaries
 frenchDictionary = {}
 englishDictionary = {}
+bilingualWordsDictionary = {}
 extraDictionary = {}
 
 #load the french dictionary
@@ -107,6 +116,19 @@ with open(filePath,"r") as dataFile:
 
 dataFile.close()
 
+#load the bilingual words dictionary
+dictionaryFileName = "bilingual_words.txt"
+filePath = "data/%s" % dictionaryFileName
+count = 1
+with open(filePath,"r") as dataFile:
+    for line in dataFile:
+        #array.append(line)
+        #print line
+        word = line.rstrip().strip()
+        bilingualWordsDictionary[word] = count
+        count += 1
+
+dataFile.close()
 #load the extra words dictionary
 dictionaryFileName = "extra_words.txt"
 filePath = "data/%s" % dictionaryFileName
@@ -121,9 +143,22 @@ with open(filePath,"r") as dataFile:
 
 dataFile.close()
 
+
+#load the a file
+dictionaryFileName = "a.txt"
+filePath = "data/%s" % dictionaryFileName
+with open(filePath,"r") as dataFile:
+    for line in dataFile:
+        #array.append(line)
+        #print line
+        aAccent = line.rstrip().strip()
+
+dataFile.close()
+
 #print the sizes of the dictionaries
 print "frenchDictionary size:", len(frenchDictionary)
 print "englishDictionary size:", len(englishDictionary)
+print "bilingualWordsDictionary size:", len(bilingualWordsDictionary)
 print "extraDictionary size:", len(extraDictionary)
 print " "
 
@@ -141,10 +176,13 @@ pluralFrExceptions = ["top","arn","deux","trois","quatres","cinq"]
 
 #for language variation checking
 lastKeyLanguageIs = "Empty" # "French", "English", "Extra", "Error", "Empty"
-languageVariationChecking = True #warning it's a first very inneficient version due to some names inserted in the dictionnaries and same spelled words
+languageVariationChecking = True #warning it's a first version, a little bit inneficient due to some names inserted in the dictionnaries
 
 #other
 lastKey = ""
+
+#a checking switch
+aChecking = False
 
 #open the target file
 lineNumber = 0
@@ -158,14 +196,14 @@ with open(filePath,"r") as dataFile:
         #print lineNumber," lines done         \r",
 	#linePure = line.rstrip().strip().replace(';',' ').replace(',',' ').replace('.',' ').replace('\'',' ')
 	linePure = line.rstrip().strip().replace(';',' ').replace(',',' ').replace('\'',' ')
-	linePure2 = linePure.rstrip().strip().replace('\"',' ').replace('?',' ').replace(':',' ').replace('-',' ').replace('!',' ').replace('`',' ')
+	linePure2 = linePure.rstrip().strip().replace('\"',' ').replace('?','.').replace(':',' ').replace('-',' ').replace('!','.').replace('`',' ')
 	#linePure3 = linePure.rstrip().strip().replace('(',' ').replace(')',' ').replace('{',' ').replace('}',' ')
         for word in linePure2.split(" "): #split the line into words
             pureWord = word.rstrip().strip() #take the blank spaces before and after
             if pureWord.find(".") != -1: #if there is a dot at the end of the word, take it off
                 if pureWord[len(pureWord)-1] == '.':#so that website stay but no ending words
                     pureWord = pureWord[0:len(pureWord)-1]
-
+                    lastKeyLanguageIs = "Empty"
 
 
             #key = pureWord.decode('utf-8').lower()
@@ -181,17 +219,19 @@ with open(filePath,"r") as dataFile:
                     if key in frenchDictionary: #if it's in the french dictionary
                         #print "ok"
                         if (lastKeyLanguageIs == "English" and languageVariationChecking):
-                            if (not(key in extraDictionary or lastKey in extraDictionary)):
-                                print "%s %s (%s), en-fr language switch?" % (lastKey,key,lineNumber) #print the potential mistake
-                                numberOfPotentialLanguageSwitch += 1
+                            if (not(key in bilingualWordsDictionary or lastKey in bilingualWordsDictionary)):
+                                if (not(key in extraDictionary or lastKey in extraDictionary)):
+                                    print "%s %s (%s), en-fr language switch?" % (lastKey,key,lineNumber) #print the potential mistake
+                                    numberOfPotentialLanguageSwitch += 1
                         lastKeyLanguageIs = "French"
                         pass
                     elif key in englishDictionary: #if it's in the english dictionary
                         #print "ok"
                         if (lastKeyLanguageIs == "French" and languageVariationChecking):
-                            if (not(key in extraDictionary or lastKey in extraDictionary)):
-                                print "%s %s (%s), fr-en language switch?" % (lastKey,key,lineNumber) #print the potential mistake
-                                numberOfPotentialLanguageSwitch += 1
+                            if (not(key in bilingualWordsDictionary or lastKey in bilingualWordsDictionary)):
+                                if (not(key in extraDictionary or lastKey in extraDictionary)):
+                                    print "%s %s (%s), fr-en language switch?" % (lastKey,key,lineNumber) #print the potential mistake
+                                    numberOfPotentialLanguageSwitch += 1
                         lastKeyLanguageIs = "English"
                         pass
                     elif key in extraDictionary: #if it's in the extra words dictionary
@@ -205,7 +245,7 @@ with open(filePath,"r") as dataFile:
                         #print "%s" % (key)
                         #print "%s" % (pureWord)
 
-                    if (lastKeyFrPlural):#if the last key was
+                    if (lastKeyFrPlural):#if the last key was a french plural determiner
                         if (key[len(key)-1] == 's' or key[len(key)-1] == 'x'):
                             pass
                         elif key in pluralFrExceptions:
@@ -213,6 +253,18 @@ with open(filePath,"r") as dataFile:
                         else:
                             numberOfPotentialMistakes += 1
                             print "%s (%s), plural?" % (key,lineNumber) #print the potential mistake
+
+                    if (lastKey == "tout"):#commun error: "tout les" -> "tous les"
+                        if (key in pluralFrDeterminers):
+                            numberOfPotentialMistakes += 1
+                            print "%s %s (%s), tous?" % (lastKey, key, lineNumber) #print the potential mistake
+
+		    if (aChecking):
+                        if (lastKey == "a" or lastKey == aAccent):
+                            print "%s %s (%s), aaa?" % (lastKey,key,lineNumber) #print the potential mistake
+                        if (key == "a" or key == aAccent):
+                            print "%s %s (%s), aaa?" % (lastKey,key,lineNumber) #print the potential mistake
+
 
                     lastKey = key
                 else:
