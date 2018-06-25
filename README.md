@@ -13,4 +13,5 @@ python words_correction_program.py [the path of your target file "/u/username/Do
 It loads french, english dictionaries plus a extra words dictionary, found in the repo.
 It reads line by line, word by word the target file and search each word in the 3 dictionaries.
 If it is not found, then it reports it with the corresponding document line to the user.
+Aside orthography, it also checks for plural errors, language switch and some small common french errors.
 
