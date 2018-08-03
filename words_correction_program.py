@@ -7,10 +7,13 @@ Author: Robin Milosz
 it checks:
 french and english orthography spelling
 french plural with determiners
+other french mistakes (tout les, elision, unstackable determiners)
 
 optionnal:
 french/english language switch checking
 french "a" and "'a" (accent) listing
+repetition of words checking
+
 
 to run:
 python words_correction_program.py [the path of your target file "/u/username/Documents/example.tex"]
@@ -168,11 +171,16 @@ if (len(sys.argv) > 1):
 else:
     filePath = "my_text.txt"
 
+
+#list of parameters to
 #for plurality checking
 lastKeyFrPlural = False
 #from http://test.alloprof.qc.ca/francais/le-systeme-des-accords/le-pluriel-des-determinants.aspx
 pluralFrDeterminers = ["les","des","mes","tes","ses","nos","vos","leurs","ces","quels","quelles","deux","trois","quatres","cinq"]
 pluralFrExceptions = ["top","arn","deux","trois","quatres","cinq"]
+simpleFrDeterminersAndOthers = ["la","le","de","se","ce","si"]
+frVowelsPlusH= ["a","e","i","o","u","y","h"]
+unstackableFrDeterminers = ["les","des","mes","tes","ses","nos","vos","ces","le","la","ce","mon","ma","ton","ta","son","sa","l"]
 
 #for language variation checking
 lastKeyLanguageIs = "Empty" # "French", "English", "Extra", "Error", "Empty"
@@ -183,6 +191,10 @@ lastKey = ""
 
 #a checking switch
 aChecking = False
+
+#repetition checking switch
+repetitionChecking = True
+
 
 #open the target file
 lineNumber = 0
@@ -209,11 +221,6 @@ with open(filePath,"r") as dataFile:
             #key = pureWord.decode('utf-8').lower()
             key = pureWord.lower() #put it in lowercase
             if len(key) > 0:
-                if key in pluralFrDeterminers:#checking if its a plural determiner
-                    lastKeyFrPlural = True
-                else:
-                    lastKeyFrPlural = False
-
                 if okKey(key):
                     numberOfCheckedKeysInFile += 1
                     if key in frenchDictionary: #if it's in the french dictionary
@@ -253,17 +260,38 @@ with open(filePath,"r") as dataFile:
                         else:
                             numberOfPotentialMistakes += 1
                             print "%s (%s), plural?" % (key,lineNumber) #print the potential mistake
+                            
+                    if (lastKey in simpleFrDeterminersAndOthers):#french elision: "la eau" -> "l'eau", "de arbre" -> "d'arbre", "ce est" -> "c'est"
+                        if (key[0] in frVowelsPlusH):
+                            numberOfPotentialMistakes += 1
+                            print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
+                            
+                    if (lastKey in unstackableFrDeterminers):#french error
+                        if (key in unstackableFrDeterminers):
+                            numberOfPotentialMistakes += 1
+                            print "%s %s (%s), unstackable?" % (lastKey, key, lineNumber) #print the potential mistake
 
-                    if (lastKey == "tout"):#commun error: "tout les" -> "tous les"
+                    if (lastKey == "tout"):#commun french error: "tout les" -> "tous les"
                         if (key in pluralFrDeterminers):
                             numberOfPotentialMistakes += 1
                             print "%s %s (%s), tous?" % (lastKey, key, lineNumber) #print the potential mistake
+                            
+                    if (repetitionChecking):#repetition check: "I was there there yesterday"
+                        if (lastKey == key ):
+                            numberOfPotentialMistakes += 1
+                            print "%s %s (%s), repetition?" % (lastKey,key,lineNumber) #print the potential mistake
 
-		    if (aChecking):
+                    if (aChecking):
                         if (lastKey == "a" or lastKey == aAccent):
                             print "%s %s (%s), aaa?" % (lastKey,key,lineNumber) #print the potential mistake
                         if (key == "a" or key == aAccent):
                             print "%s %s (%s), aaa?" % (lastKey,key,lineNumber) #print the potential mistake
+                            
+								
+                    if key in pluralFrDeterminers:#checking if its a plural determiner
+						lastKeyFrPlural = True
+                    else:
+						lastKeyFrPlural = False
 
 
                     lastKey = key
