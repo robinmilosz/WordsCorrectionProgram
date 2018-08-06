@@ -309,8 +309,13 @@ with open(filePath,"r") as dataFile:
 							
                     if (lastKey in simpleFrDeterminersAndOthers):#french elision: "la eau" -> "l'eau", "de arbre" -> "d'arbre", "ce est" -> "c'est"
                         if (key[0] in frVowelsPlusH):
-                            numberOfPotentialMistakes += 1
-                            print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
+							if (lastKey == "si" and key == "on"):
+								pass
+							elif (lastKey == "si" and key == "elle"):
+								pass
+							else:
+								numberOfPotentialMistakes += 1
+								print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
                         elif (len(key)>= 2):
 							if (key[0] == '\xc3' and key[1] == '\xa9'):
 								numberOfPotentialMistakes += 1
@@ -334,6 +339,10 @@ with open(filePath,"r") as dataFile:
                     lastKey = key
                 else:
                     lastKeyLanguageIs = "Empty"
+                    lastKeyFrPlural = False
+                    lastKey = ""
+                    if (repetitionChecking):
+                        lastKeys.addKey(key)
 
 
 #close the file
