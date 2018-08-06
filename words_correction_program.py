@@ -22,10 +22,32 @@ python words_correction_program.py [the path of your target file "/u/username/Do
 #imports
 import time
 import sys
+import math
 
 #start counting the time
 nm = 0
 ts = time.time()
+
+class queueOfKeys:
+	def __init__(self,desiredLength):
+		self.length = desiredLength
+		self.queue = [""] * desiredLength
+	def addKey(self,key):
+		for i in reversed(range(1,self.length)):
+			self.queue[i]=self.queue[i-1]
+		self.queue[0]=key
+	def verifyRepetition(self):
+		maxSizeOfRepetition = int(math.floor(self.length/2))
+		for j in range(1,maxSizeOfRepetition+1):
+			repetition = True
+			for i in range(j):
+				if (self.queue[i] != self.queue[i+j]):
+					repetition = False
+			if (repetition):
+				return j
+		return 0
+				
+
 
 #this method tests if a word is "normal" and can be check in a dictionary
 # it prevents a lot of LaTeX formatting words to be checked
@@ -179,7 +201,7 @@ lastKeyFrPlural = False
 pluralFrDeterminers = ["les","des","mes","tes","ses","nos","vos","leurs","ces","quels","quelles","deux","trois","quatres","cinq"]
 pluralFrExceptions = ["top","arn","deux","trois","quatres","cinq"]
 simpleFrDeterminersAndOthers = ["la","le","de","se","ce","si"]
-frVowelsPlusH= ["a","e","i","o","u","y","h"]
+frVowelsPlusH= ["a","e","i","o","u","y","h","\xc3\xa9"]
 unstackableFrDeterminers = ["les","des","mes","tes","ses","nos","vos","ces","le","la","ce","mon","ma","ton","ta","son","sa","l"]
 
 #for language variation checking
@@ -194,7 +216,7 @@ aChecking = False
 
 #repetition checking switch
 repetitionChecking = True
-
+lastKeys = queueOfKeys(10)
 
 #open the target file
 lineNumber = 0
@@ -261,11 +283,6 @@ with open(filePath,"r") as dataFile:
                             numberOfPotentialMistakes += 1
                             print "%s (%s), plural?" % (key,lineNumber) #print the potential mistake
                             
-                    if (lastKey in simpleFrDeterminersAndOthers):#french elision: "la eau" -> "l'eau", "de arbre" -> "d'arbre", "ce est" -> "c'est"
-                        if (key[0] in frVowelsPlusH):
-                            numberOfPotentialMistakes += 1
-                            print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
-                            
                     if (lastKey in unstackableFrDeterminers):#french error
                         if (key in unstackableFrDeterminers):
                             numberOfPotentialMistakes += 1
@@ -277,16 +294,36 @@ with open(filePath,"r") as dataFile:
                             print "%s %s (%s), tous?" % (lastKey, key, lineNumber) #print the potential mistake
                             
                     if (repetitionChecking):#repetition check: "I was there there yesterday"
-                        if (lastKey == key ):
+                        #if (lastKey == key ):
+                        #    numberOfPotentialMistakes += 1
+                        #    print "%s %s (%s), repetition?" % (lastKey,key,lineNumber) #print the potential mistake
+                        lastKeys.addKey(key)
+                        #print lastKeys.queue
+                        #print key
+                        repetitionValue = lastKeys.verifyRepetition()
+                        if (repetitionValue != 0):
+							repetitionSequence = ""
+							for i in range(repetitionValue*2):
+								repetitionSequence = lastKeys.queue[i] + " " + repetitionSequence
+							print "%s (%s), repetition?" % (repetitionSequence,lineNumber) #print the potential mistake
+							
+                    if (lastKey in simpleFrDeterminersAndOthers):#french elision: "la eau" -> "l'eau", "de arbre" -> "d'arbre", "ce est" -> "c'est"
+                        if (key[0] in frVowelsPlusH):
                             numberOfPotentialMistakes += 1
-                            print "%s %s (%s), repetition?" % (lastKey,key,lineNumber) #print the potential mistake
-
+                            print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
+                        elif (len(key)>= 2):
+							if (key[0] == '\xc3' and key[1] == '\xa9'):
+								numberOfPotentialMistakes += 1
+								print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
+							
                     if (aChecking):
                         if (lastKey == "a" or lastKey == aAccent):
                             print "%s %s (%s), aaa?" % (lastKey,key,lineNumber) #print the potential mistake
                         if (key == "a" or key == aAccent):
                             print "%s %s (%s), aaa?" % (lastKey,key,lineNumber) #print the potential mistake
                             
+                    
+						
 								
                     if key in pluralFrDeterminers:#checking if its a plural determiner
 						lastKeyFrPlural = True
