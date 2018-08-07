@@ -85,6 +85,7 @@ retweeté
 retweetés
 optimalité
 métaheuristique
+métaheuristiques
 prétraitement
 différement
 dépendamment
@@ -118,6 +119,15 @@ reviewers
 manipulable
 finaux
 subexponentiel
+reformulation
+reformulations
+métamoteur
+métamoteurs
+recalcul
+automédian
+automédians
+automédiane
+automédianes
 
 
 HTMLWords

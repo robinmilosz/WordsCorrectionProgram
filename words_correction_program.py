@@ -198,10 +198,10 @@ else:
 #for plurality checking
 lastKeyFrPlural = False
 #from http://test.alloprof.qc.ca/francais/le-systeme-des-accords/le-pluriel-des-determinants.aspx
-pluralFrDeterminers = ["les","des","mes","tes","ses","nos","vos","leurs","ces","quels","quelles","deux","trois","quatres","cinq"]
-pluralFrExceptions = ["top","arn","deux","trois","quatres","cinq"]
+pluralFrDeterminers = ["les","des","mes","tes","ses","nos","vos","leurs","ces","quels","quelles","leurs","plusieurs","deux","trois","quatres","cinq"]
+pluralFrExceptions = ["top","arn","deux","trois","quatre","cinq","ou"]
 simpleFrDeterminersAndOthers = ["la","le","de","se","ce","si"]
-frVowelsPlusH= ["a","e","i","o","u","y","h","\xc3\xa9"]
+frVowelsPlusH= ["a","e","i","o","u","y","\xc3\xa9"]#I took out the H because there is two kinds of H in french language that obey different rules
 unstackableFrDeterminers = ["les","des","mes","tes","ses","nos","vos","ces","le","la","ce","mon","ma","ton","ta","son","sa","l"]
 
 #for language variation checking
@@ -230,7 +230,7 @@ with open(filePath,"r") as dataFile:
         #print lineNumber," lines done         \r",
 	#linePure = line.rstrip().strip().replace(';',' ').replace(',',' ').replace('.',' ').replace('\'',' ')
 	linePure = line.rstrip().strip().replace(';',' ').replace(',',' ').replace('\'',' ')
-	linePure2 = linePure.rstrip().strip().replace('\"',' ').replace('?','.').replace(':',' ').replace('-',' ').replace('!','.').replace('`',' ')
+	linePure2 = linePure.rstrip().strip().replace('\"',' ').replace('?','.').replace(':',' ').replace('!','.').replace('`',' ')
 	#linePure3 = linePure.rstrip().strip().replace('(',' ').replace(')',' ').replace('{',' ').replace('}',' ')
         for word in linePure2.split(" "): #split the line into words
             pureWord = word.rstrip().strip() #take the blank spaces before and after
@@ -306,20 +306,23 @@ with open(filePath,"r") as dataFile:
 							for i in range(repetitionValue*2):
 								repetitionSequence = lastKeys.queue[i] + " " + repetitionSequence
 							print "%s (%s), repetition?" % (repetitionSequence,lineNumber) #print the potential mistake
+							#make exception for "nous nous" and "vous vous"?
 							
                     if (lastKey in simpleFrDeterminersAndOthers):#french elision: "la eau" -> "l'eau", "de arbre" -> "d'arbre", "ce est" -> "c'est"
                         if (key[0] in frVowelsPlusH):
-							if (lastKey == "si" and key == "on"):
+							if (key == "ou"):
 								pass
-							elif (lastKey == "si" and key == "elle"):
-								pass
-							else:
+							else
 								numberOfPotentialMistakes += 1
 								print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
                         elif (len(key)>= 2):
 							if (key[0] == '\xc3' and key[1] == '\xa9'):
 								numberOfPotentialMistakes += 1
 								print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
+					if (lastKey == "si"):#french elision: "si il" -> "s'il"
+						if (key == "il" or key == "ils"):
+							numberOfPotentialMistakes += 1
+							print "%s %s (%s), s' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
 							
                     if (aChecking):
                         if (lastKey == "a" or lastKey == aAccent):
