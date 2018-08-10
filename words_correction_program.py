@@ -312,14 +312,14 @@ with open(filePath,"r") as dataFile:
                         if (key[0] in frVowelsPlusH):
 							if (key == "ou"):
 								pass
-							else
+							else:
 								numberOfPotentialMistakes += 1
 								print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
                         elif (len(key)>= 2):
 							if (key[0] == '\xc3' and key[1] == '\xa9'):
 								numberOfPotentialMistakes += 1
 								print "%s %s (%s), l'/d'/s'/c' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
-					if (lastKey == "si"):#french elision: "si il" -> "s'il"
+                    if (lastKey == "si"):#french elision: "si il" -> "s'il"
 						if (key == "il" or key == "ils"):
 							numberOfPotentialMistakes += 1
 							print "%s %s (%s), s' %s ?" % (lastKey, key, lineNumber, key) #print the potential mistake
