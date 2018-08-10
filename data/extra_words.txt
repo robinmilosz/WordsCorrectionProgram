@@ -124,10 +124,20 @@ reformulations
 métamoteur
 métamoteurs
 recalcul
-automédian
-automédians
-automédiane
-automédianes
+multi-ensemble
+surjective
+surjectives
+injective
+injectives
+bijective
+bijectives
+est-à-dire
+np-complet
+np-complete
+np-difficile
+np-hard
+2-approximation
+2-approximations
 
 
 HTMLWords
@@ -186,8 +196,14 @@ prédoc
 
 KemenyConsensusWords
 
+automédian
+automédians
+automédiane
+automédianes
 kendall
+kendall-tau
 kemeny
+kemeny-young
 fur
 vns
 bestofa
@@ -223,8 +239,19 @@ kwiksort
 ms
 ks
 is
+sc
 copeland
 copelandwins
+2-opt
+3-opt
+k-opt
+3-cycle
+3-cycles
+pick-a-perm
+0-mouvement
+0-mouvements
+gready-order
+branch-and-bound
 kernelization
 votefair
 pagerank
@@ -371,9 +398,11 @@ transcriptomique
 toppgene
 endeavour
 arn
+adhd
 
 PlacesJournalsConferences
 
+paris-sud
 illinois
 crossref
 pubmed
@@ -398,6 +427,7 @@ montréal
 lri
 algorithmica
 lncs
+oeis
 optcrossref
 optkey
 booktitle
@@ -501,6 +531,12 @@ sz09
 mh18
 rh17
 bbn14
+cg15
+cjr84
+lmc99
+mr11
+ks07
+cdk06
 
 
 ScienceAuthorsNames 
@@ -614,7 +650,9 @@ schudy
 fisher
 yates
 simpson
-
+fubuni
+turing
+arthur
 
 OtherRandomWords
 
@@ -624,3 +662,5 @@ telecommuting
 lycos
 zener
 lipari
+krusty
+dulwich

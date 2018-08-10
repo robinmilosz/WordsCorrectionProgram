@@ -101,6 +101,20 @@ def okKey(key):
     else:
         return True
 
+def isCompositeKey(key):
+    if key.find("-") != -1:
+        return False
+    else:
+        return True
+        
+def chopTheNonKey(key):
+	newKey = key
+	if (key.find("-") == 3):
+		if (key[0:3] == "non"):
+			newKey = key[4:]
+	return newKey
+        
+        
 #welcome print
 print " "
 print " *** Word Correction Program ***"
@@ -200,7 +214,7 @@ lastKeyFrPlural = False
 #from http://test.alloprof.qc.ca/francais/le-systeme-des-accords/le-pluriel-des-determinants.aspx
 pluralFrDeterminers = ["les","des","mes","tes","ses","nos","vos","leurs","ces","quels","quelles","leurs","plusieurs","deux","trois","quatres","cinq"]
 pluralFrExceptions = ["top","arn","deux","trois","quatre","cinq","ou"]
-simpleFrDeterminersAndOthers = ["la","le","de","se","ce","si"]
+simpleFrDeterminersAndOthers = ["la","le","de","se","ce"]
 frVowelsPlusH= ["a","e","i","o","u","y","\xc3\xa9"]#I took out the H because there is two kinds of H in french language that obey different rules
 unstackableFrDeterminers = ["les","des","mes","tes","ses","nos","vos","ces","le","la","ce","mon","ma","ton","ta","son","sa","l"]
 
@@ -228,10 +242,10 @@ with open(filePath,"r") as dataFile:
     for line in dataFile: #read all the lines
         lineNumber += 1
         #print lineNumber," lines done         \r",
-	#linePure = line.rstrip().strip().replace(';',' ').replace(',',' ').replace('.',' ').replace('\'',' ')
-	linePure = line.rstrip().strip().replace(';',' ').replace(',',' ').replace('\'',' ')
-	linePure2 = linePure.rstrip().strip().replace('\"',' ').replace('?','.').replace(':',' ').replace('!','.').replace('`',' ')
-	#linePure3 = linePure.rstrip().strip().replace('(',' ').replace(')',' ').replace('{',' ').replace('}',' ')
+        #linePure = line.rstrip().strip().replace(';',' ').replace(',',' ').replace('.',' ').replace('\'',' ')
+        linePure = line.rstrip().strip().replace(';',' ').replace(',',' ').replace('\'',' ')
+        linePure2 = linePure.rstrip().strip().replace('\"',' ').replace('?','.').replace(':',' ').replace('!','.').replace('`',' ')
+        #linePure3 = linePure.rstrip().strip().replace('(',' ').replace(')',' ').replace('{',' ').replace('}',' ')
         for word in linePure2.split(" "): #split the line into words
             pureWord = word.rstrip().strip() #take the blank spaces before and after
             if pureWord.find(".") != -1: #if there is a dot at the end of the word, take it off
@@ -245,15 +259,15 @@ with open(filePath,"r") as dataFile:
             if len(key) > 0:
                 if okKey(key):
                     numberOfCheckedKeysInFile += 1
-                    if key in frenchDictionary: #if it's in the french dictionary
+                    if chopTheNonKey(key) in frenchDictionary: #if it's in the french dictionary
                         #print "ok"
-                        if (lastKeyLanguageIs == "English" and languageVariationChecking):
-                            if (not(key in bilingualWordsDictionary or lastKey in bilingualWordsDictionary)):
-                                if (not(key in extraDictionary or lastKey in extraDictionary)):
-                                    print "%s %s (%s), en-fr language switch?" % (lastKey,key,lineNumber) #print the potential mistake
-                                    numberOfPotentialLanguageSwitch += 1
-                        lastKeyLanguageIs = "French"
-                        pass
+						if (lastKeyLanguageIs == "English" and languageVariationChecking):
+							if (not(key in bilingualWordsDictionary or lastKey in bilingualWordsDictionary)):
+								if (not(key in extraDictionary or lastKey in extraDictionary)):
+									print "%s %s (%s), en-fr language switch?" % (lastKey,key,lineNumber) #print the potential mistake
+									numberOfPotentialLanguageSwitch += 1
+						lastKeyLanguageIs = "French"
+						pass
                     elif key in englishDictionary: #if it's in the english dictionary
                         #print "ok"
                         if (lastKeyLanguageIs == "French" and languageVariationChecking):
